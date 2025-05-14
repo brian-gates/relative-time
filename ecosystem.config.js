@@ -7,7 +7,7 @@ module.exports = {
       cwd: "./", // Set this to the absolute path on your server
       instances: 1,
       autorestart: true,
-      watch: false,
+      watch: true,
       max_memory_restart: "1G",
       env: {
         NODE_ENV: "production",

@@ -156,54 +156,80 @@ export default function Home() {
                 </li>
               </ul>
               <p>
-                You can visualize the component&apos;s rendering behavior using
-                Chrome DevTools:
-              </p>
-              <ol className="list-decimal pl-5 space-y-2">
-                <li>Open Chrome DevTools (F12 or Right-click → Inspect)</li>
-                <li>
-                  Click on the &ldquo;Components&rdquo; tab (requires React
-                  DevTools extension)
-                </li>
-                <li>Click the gear icon (⚙️) in the top right corner</li>
-                <li>
-                  Check &ldquo;Highlight updates when components render&rdquo;
-                </li>
-                <li>
-                  Interact with the page to see colored highlights when
-                  components re-render:
-                  <ul className="list-disc pl-5 mt-2">
-                    <li>Blue/green highlights indicate fast renders</li>
-                    <li>
-                      Yellow/red highlights indicate slower renders that may
-                      need optimization
-                    </li>
-                  </ul>
-                </li>
-              </ol>
-              <p>
-                This feature makes it easy to visually confirm that the
-                RelativeTime component only re-renders when the displayed text
-                actually changes, not on every input change or parent re-render.
-                Learn more about DevTools at{" "}
-                <a
-                  href="https://developer.chrome.com/docs/devtools"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                >
-                  developer.chrome.com/docs/devtools
-                </a>
-                .
-              </p>
-
-              <p>
                 The component is also wrapped in <code>React.memo</code> with a
                 custom comparison function that checks if two different date
                 values would produce the same formatted text (like &ldquo;2
                 minutes ago&rdquo;). If they would, React skips re-rendering
                 entirely, even when the date reference changes.
               </p>
+
+              <div className="my-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg shadow-sm">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 text-blue-600 dark:text-blue-400">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
+                      Visualize Component Renders
+                    </h4>
+                    <p className="text-blue-900 dark:text-blue-100 mb-3">
+                      You can visualize the component&apos;s rendering behavior
+                      using Chrome DevTools:
+                    </p>
+                    <ol className="list-decimal pl-5 space-y-2 text-blue-900 dark:text-blue-100">
+                      <li>
+                        Open Chrome DevTools (F12 or Right-click → Inspect)
+                      </li>
+                      <li>
+                        Click on the &ldquo;Components&rdquo; tab (requires
+                        React DevTools extension)
+                      </li>
+                      <li>Click the gear icon (⚙️) in the top right corner</li>
+                      <li>
+                        Check &ldquo;Highlight updates when components
+                        render&rdquo;
+                      </li>
+                      <li>
+                        Interact with the page to see colored highlights when
+                        components re-render:
+                        <ul className="list-disc pl-5 mt-2">
+                          <li>Blue/green highlights indicate fast renders</li>
+                          <li>
+                            Yellow/red highlights indicate slower renders that
+                            may need optimization
+                          </li>
+                        </ul>
+                      </li>
+                    </ol>
+                    <p className="mt-3 text-blue-900 dark:text-blue-100">
+                      This feature makes it easy to visually confirm that the
+                      RelativeTime component only re-renders when the displayed
+                      text actually changes, not on every input change or parent
+                      re-render. Learn more about DevTools at{" "}
+                      <a
+                        href="https://developer.chrome.com/docs/devtools"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                      >
+                        developer.chrome.com/docs/devtools
+                      </a>
+                      .
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

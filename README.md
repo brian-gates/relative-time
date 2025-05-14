@@ -54,8 +54,19 @@ This approach minimizes re-renders while keeping the displayed time accurate.
 
 - Uses React's `useState` and `useEffect` hooks for state management
 - Uses `useRef` to track timeout references for proper cleanup
-- Includes `suppressHydrationWarning` to handle server/client time differences
-- Extracts utility functions for time formatting and update calculations
+- Implements hydration-safe rendering that prevents server/client mismatches
+- Uses `React.memo` with a custom comparison function for optimal re-rendering
+
+## Preventing Hydration Mismatches
+
+The component handles server/client hydration differences by:
+
+1. Rendering ISO string dates during server-side rendering
+2. Using an `isMounted` state flag to track when client-side JavaScript is active
+3. Only switching to dynamic relative time display after hydration is complete
+4. Adding appropriate `suppressHydrationWarning` to prevent browser extension conflicts
+
+This approach ensures consistent rendering between server and client, avoiding React hydration errors while still enabling dynamic updates after hydration is complete.
 
 ## Running the Demo
 
@@ -78,6 +89,8 @@ To visualize component re-renders in real-time:
    - Yellow/red highlights indicate slower renders that may need optimization
 
 This feature makes it easy to visually confirm that the RelativeTime component only re-renders when the displayed text actually changes, not on every input change or parent re-render.
+
+> **Note:** In development mode, React StrictMode (enabled by default in Next.js) will intentionally render components twice to help catch potential issues. This double-rendering only happens in development and won't occur in production builds.
 
 Learn more about DevTools at [developer.chrome.com/docs/devtools](https://developer.chrome.com/docs/devtools).
 
