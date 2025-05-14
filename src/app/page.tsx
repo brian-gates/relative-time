@@ -1,6 +1,9 @@
 import { RelativeTime } from "@/components/relative-time";
 import { TimeSelector } from "@/components/time-selector";
 
+// Force dynamic rendering to calculate timestamps for each request
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   // Calculate all timestamps on the server
   const now = new Date().toISOString();
