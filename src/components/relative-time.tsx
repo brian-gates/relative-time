@@ -1,10 +1,13 @@
 "use client";
 
 import { formatRelativeTime, getNextUpdateTime } from "@/utils/time";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export function RelativeTime({ date }: { date: Date | string | number }) {
-  const dateObj = date instanceof Date ? date : new Date(date);
+  const dateObj = useMemo(
+    () => (date instanceof Date ? date : new Date(date)),
+    [date]
+  );
   const initialValue = formatRelativeTime(dateObj);
   const [formattedDate, setFormattedDate] = useState(initialValue);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
