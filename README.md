@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RelativeTime Component
 
-## Getting Started
+A React component for displaying relative time (like "2 minutes ago") with optimal updating. Built with Next.js and TypeScript.
 
-First, run the development server:
+## Features
+
+- **Smart Update Intervals** - Updates only when the displayed text would change, not at fixed intervals
+- **Server-Side Rendering** - Works with Next.js App Router and server components
+- **Client Hydration** - Hydrates on the client to enable dynamic updates
+- **Memory Leak Prevention** - Properly cleans up timeouts when unmounting
+- **Time Format Options** - Displays appropriate formats for seconds, minutes, hours, days, months, and years
+
+## Installation
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the demo.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```tsx
+import { RelativeTime } from "@/components/relative-time";
 
-## Learn More
+// Basic usage
+<RelativeTime date={new Date(Date.now() - 5 * 60 * 1000)} />
 
-To learn more about Next.js, take a look at the following resources:
+// With a timestamp
+<RelativeTime date={1659312000000} />
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+// With an ISO string
+<RelativeTime date="2023-03-15T12:30:45Z" />
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## How It Works
 
-## Deploy on Vercel
+The component calculates the next meaningful update time based on the current relative time:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- For times less than a minute ago → updates every second
+- For times in minutes → updates when the minute changes
+- For times in hours → updates when the hour changes
+- For times in days/months/years → follows similar boundary-based timing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This approach minimizes re-renders while keeping the displayed time accurate.
+
+## Implementation Details
+
+- Uses React's `useState` and `useEffect` hooks for state management
+- Uses `useRef` to track timeout references for proper cleanup
+- Includes `suppressHydrationWarning` to handle server/client time differences
+- Extracts utility functions for time formatting and update calculations
+
+## Running the Demo
+
+The demo page includes:
+
+1. An interactive date/time selector to test different times
+2. Examples of various time periods (seconds to years)
+3. Explanation of optimizations used
+
+Check the browser console to see logs of when the component actually updates.
+
+## Next.js Project
+
+This is a [Next.js](https://nextjs.org) project using the App Router. Check out the [Next.js documentation](https://nextjs.org/docs) for more information on the framework.
