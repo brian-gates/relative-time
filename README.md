@@ -1,8 +1,8 @@
 # RelativeTime Component
 
-View live demo at [briangates.me:4000](http://briangates.me:4000).
-
 A React component for displaying relative time (like "2 minutes ago") with optimal updating. Built with Next.js and TypeScript.
+
+**GitHub Repository:** [github.com/brian-gates/relative-time](https://github.com/brian-gates/relative-time)
 
 ## Features
 
@@ -11,6 +11,7 @@ A React component for displaying relative time (like "2 minutes ago") with optim
 - **Client Hydration** - Hydrates on the client to enable dynamic updates
 - **Memory Leak Prevention** - Properly cleans up timeouts when unmounting
 - **Time Format Options** - Displays appropriate formats for seconds, minutes, hours, days, months, and years
+- **Memoized Component** - Uses React.memo with a custom comparison function that prevents re-renders when dates would display the same text
 
 ## Installation
 
@@ -20,6 +21,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the demo.
+
+You can also visit the live demo at [briangates.me:4000](http://briangates.me:4000).
 
 ## Usage
 
@@ -62,7 +65,21 @@ The demo page includes:
 2. Examples of various time periods (seconds to years)
 3. Explanation of optimizations used
 
-Check the browser console to see logs of when the component actually updates.
+## Debugging and Visualizing Renders
+
+To visualize component re-renders in real-time:
+
+1. Open Chrome DevTools (F12 or Right-click → Inspect)
+2. Click on the "Components" tab (you need React DevTools extension installed)
+3. Click the gear icon (⚙️) in the top right corner
+4. Check "Highlight updates when components render"
+5. Interact with the page to see colored highlights when components re-render
+   - Blue/green highlights indicate fast renders
+   - Yellow/red highlights indicate slower renders that may need optimization
+
+This feature makes it easy to visually confirm that the RelativeTime component only re-renders when the displayed text actually changes, not on every input change or parent re-render.
+
+Learn more about DevTools at [developer.chrome.com/docs/devtools](https://developer.chrome.com/docs/devtools).
 
 ## Deployment with PM2
 

@@ -1,9 +1,10 @@
 "use client";
 
 import { formatRelativeTime, getNextUpdateTime } from "@/utils/time";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
-export function RelativeTime({ date }: { date: Date | string | number }) {
+// Component implementation that handles the actual rendering and updates
+function RelativeTimeComponent({ date }: { date: Date | string | number }) {
   const dateObj = useMemo(
     () => (date instanceof Date ? date : new Date(date)),
     [date]
@@ -15,10 +16,12 @@ export function RelativeTime({ date }: { date: Date | string | number }) {
   useEffect(() => {
     function updateDisplay() {
       const newFormattedValue = formatRelativeTime(dateObj);
-      setFormattedDate(newFormattedValue);
+
+      if (newFormattedValue !== formattedDate) {
+        setFormattedDate(newFormattedValue);
+      }
 
       const msUntilNextUpdate = getNextUpdateTime(dateObj);
-
       timeoutRef.current = setTimeout(updateDisplay, msUntilNextUpdate);
     }
 
@@ -29,9 +32,7 @@ export function RelativeTime({ date }: { date: Date | string | number }) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [dateObj]);
-
-  console.log(`Re-rendered: ${formattedDate} ${dateObj.toISOString()}`);
+  }, [dateObj, formattedDate]);
 
   return (
     <time
@@ -43,3 +44,33 @@ export function RelativeTime({ date }: { date: Date | string | number }) {
     </time>
   );
 }
+
+// Custom comparison function that only causes re-renders when the formatted text would change
+const arePropsEqual = (
+  prevProps: { date: Date | string | number },
+  nextProps: { date: Date | string | number }
+) => {
+  const prevDate =
+    prevProps.date instanceof Date ? prevProps.date : new Date(prevProps.date);
+  const nextDate =
+    nextProps.date instanceof Date ? nextProps.date : new Date(nextProps.date);
+
+  console.log(
+    `Comparing dates: ${prevDate.toISOString()} vs ${nextDate.toISOString()}`
+  );
+
+  // Only re-render if the formatted display text would be different
+  const prevText = formatRelativeTime(prevDate);
+  const nextText = formatRelativeTime(nextDate);
+  const areEqual = prevText === nextText;
+
+  console.log(
+    `Formatted text: "${prevText}" vs "${nextText}" - Equal: ${areEqual}`
+  );
+
+  return areEqual;
+};
+
+// Export a memoized version of the component that only re-renders when
+// the formatted text would actually change, not just when the date prop changes
+export const RelativeTime = React.memo(RelativeTimeComponent, arePropsEqual);

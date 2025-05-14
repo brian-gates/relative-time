@@ -3,7 +3,7 @@ import { TimeSelector } from "@/components/time-selector";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 gap-16 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <h1 className="text-2xl font-bold">Relative Time Component</h1>
 
@@ -124,6 +124,11 @@ export default function Home() {
                   <strong>Time Format Options</strong> - Displays appropriate
                   formats for seconds, minutes, hours, days, months, and years
                 </li>
+                <li>
+                  <strong>Memoized Component</strong> - Uses React.memo with a
+                  custom comparison function that prevents re-renders when dates
+                  would display the same text
+                </li>
               </ul>
 
               <p className="mt-6">
@@ -151,12 +156,53 @@ export default function Home() {
                 </li>
               </ul>
               <p>
-                Open your browser&apos;s console to see log messages whenever
-                the component re-renders. You&apos;ll notice it only updates
-                when the displayed text actually changes, not at arbitrary
-                intervals. This approach significantly reduces unnecessary
-                renders and DOM updates while keeping the displayed time
-                accurate.
+                You can visualize the component&apos;s rendering behavior using
+                Chrome DevTools:
+              </p>
+              <ol className="list-decimal pl-5 space-y-2">
+                <li>Open Chrome DevTools (F12 or Right-click → Inspect)</li>
+                <li>
+                  Click on the &ldquo;Components&rdquo; tab (requires React
+                  DevTools extension)
+                </li>
+                <li>Click the gear icon (⚙️) in the top right corner</li>
+                <li>
+                  Check &ldquo;Highlight updates when components render&rdquo;
+                </li>
+                <li>
+                  Interact with the page to see colored highlights when
+                  components re-render:
+                  <ul className="list-disc pl-5 mt-2">
+                    <li>Blue/green highlights indicate fast renders</li>
+                    <li>
+                      Yellow/red highlights indicate slower renders that may
+                      need optimization
+                    </li>
+                  </ul>
+                </li>
+              </ol>
+              <p>
+                This feature makes it easy to visually confirm that the
+                RelativeTime component only re-renders when the displayed text
+                actually changes, not on every input change or parent re-render.
+                Learn more about DevTools at{" "}
+                <a
+                  href="https://developer.chrome.com/docs/devtools"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  developer.chrome.com/docs/devtools
+                </a>
+                .
+              </p>
+
+              <p>
+                The component is also wrapped in <code>React.memo</code> with a
+                custom comparison function that checks if two different date
+                values would produce the same formatted text (like &ldquo;2
+                minutes ago&rdquo;). If they would, React skips re-rendering
+                entirely, even when the date reference changes.
               </p>
             </div>
           </div>
