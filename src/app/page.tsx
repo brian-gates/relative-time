@@ -2,6 +2,21 @@ import { RelativeTime } from "@/components/relative-time";
 import { TimeSelector } from "@/components/time-selector";
 
 export default function Home() {
+  // Calculate all timestamps on the server
+  const now = new Date().toISOString();
+  const thirtySecondsAgo = new Date(Date.now() - 30 * 1000).toISOString();
+  const twoMinutesAgo = new Date(Date.now() - 2 * 60 * 1000).toISOString();
+  const threeHoursAgo = new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString();
+  const twoDaysAgo = new Date(
+    Date.now() - 2 * 24 * 60 * 60 * 1000
+  ).toISOString();
+  const threeMonthsAgo = new Date(
+    Date.now() - 90 * 24 * 60 * 60 * 1000
+  ).toISOString();
+  const twoYearsAgo = new Date(
+    Date.now() - 2 * 365 * 24 * 60 * 60 * 1000
+  ).toISOString();
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -60,38 +75,34 @@ export default function Home() {
             <p className="text-gray-600 dark:text-gray-400">
               Select a date and time to see how the component displays it
             </p>
-            <TimeSelector />
+            <TimeSelector initialTime={now} />
           </div>
 
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Examples</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="font-medium">5 seconds ago:</div>
-              <RelativeTime date={new Date(Date.now() - 5 * 1000)} />
+              <RelativeTime
+                date={new Date(Date.now() - 5 * 1000).toISOString()}
+              />
 
               <div className="font-medium">30 seconds ago:</div>
-              <RelativeTime date={new Date(Date.now() - 30 * 1000)} />
+              <RelativeTime date={thirtySecondsAgo} />
 
               <div className="font-medium">2 minutes ago:</div>
-              <RelativeTime date={new Date(Date.now() - 2 * 60 * 1000)} />
+              <RelativeTime date={twoMinutesAgo} />
 
               <div className="font-medium">3 hours ago:</div>
-              <RelativeTime date={new Date(Date.now() - 3 * 60 * 60 * 1000)} />
+              <RelativeTime date={threeHoursAgo} />
 
               <div className="font-medium">2 days ago:</div>
-              <RelativeTime
-                date={new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)}
-              />
+              <RelativeTime date={twoDaysAgo} />
 
               <div className="font-medium">3 months ago:</div>
-              <RelativeTime
-                date={new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)}
-              />
+              <RelativeTime date={threeMonthsAgo} />
 
               <div className="font-medium">2 years ago:</div>
-              <RelativeTime
-                date={new Date(Date.now() - 2 * 365 * 24 * 60 * 60 * 1000)}
-              />
+              <RelativeTime date={twoYearsAgo} />
             </div>
           </div>
 
@@ -156,11 +167,9 @@ export default function Home() {
                 </li>
               </ul>
               <p>
-                The component is also wrapped in <code>React.memo</code> with a
-                custom comparison function that checks if two different date
-                values would produce the same formatted text (like &ldquo;2
-                minutes ago&rdquo;). If they would, React skips re-rendering
-                entirely, even when the date reference changes.
+                This approach ensures the component updates only when necessary,
+                improving performance by minimizing DOM operations and
+                re-renders.
               </p>
 
               <div className="my-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg shadow-sm">

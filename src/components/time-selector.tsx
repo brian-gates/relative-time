@@ -1,14 +1,34 @@
 "use client";
 
 import { RelativeTime } from "@/components/relative-time";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-export function TimeSelector() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+export function TimeSelector({ initialTime }: { initialTime: string }) {
+  // Initialize with the timestamp from the server
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date(initialTime));
 
-  function handleDateChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSelectedDate(new Date(e.target.value));
-  }
+  // Memoize the ISO string to maintain reference equality
+  const selectedDateISO = useMemo(
+    () => selectedDate.toISOString(),
+    [selectedDate]
+  );
+
+  const formattedDateTime = useMemo(
+    () => formatDateTimeLocal(selectedDate),
+    [selectedDate]
+  );
+
+  // Memoize the change handler to avoid recreating on each render
+  const handleDateChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newDate = new Date(e.target.value);
+      // Only update if the date actually changed
+      if (newDate.getTime() !== selectedDate.getTime()) {
+        setSelectedDate(newDate);
+      }
+    },
+    [selectedDate]
+  );
 
   return (
     <div className="space-y-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
@@ -19,9 +39,9 @@ export function TimeSelector() {
         <input
           id="date-input"
           type="datetime-local"
-          value={formatDateTimeLocal(selectedDate)}
+          value={formattedDateTime}
           onChange={handleDateChange}
-          className="px-3 py-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800"
+          className="px-3 py-2 border border-gray-300 rounded-md dark:border-gray-600 dark:bg-gray-800 transition-opacity duration-300"
           step="1"
         />
       </div>
@@ -29,10 +49,12 @@ export function TimeSelector() {
       <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="font-medium">Selected time:</div>
-          <div>{selectedDate.toLocaleString()}</div>
+          <div className="transition-opacity duration-300">
+            {selectedDate.toLocaleString()}
+          </div>
 
           <div className="font-medium">Relative display:</div>
-          <RelativeTime date={selectedDate} />
+          <RelativeTime date={selectedDateISO} />
         </div>
       </div>
     </div>

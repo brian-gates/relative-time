@@ -29,15 +29,11 @@ You can also visit the live demo at [briangates.me:4000](http://briangates.me:40
 ```tsx
 import { RelativeTime } from "@/components/relative-time";
 
-// Basic usage
-<RelativeTime date={new Date(Date.now() - 5 * 60 * 1000)} />
-
-// With a timestamp
-<RelativeTime date={1659312000000} />
-
-// With an ISO string
 <RelativeTime date="2023-03-15T12:30:45Z" />
+<RelativeTime date={new Date(Date.now() - 2 * 60 * 1000).toISOString()} />
 ```
+
+The component only accepts ISO string dates as input. This ensures consistent rendering between server and client components, preventing hydration mismatches that can occur with Date objects.
 
 ## How It Works
 
@@ -61,10 +57,9 @@ This approach minimizes re-renders while keeping the displayed time accurate.
 
 The component handles server/client hydration differences by:
 
-1. Rendering ISO string dates during server-side rendering
-2. Using an `isMounted` state flag to track when client-side JavaScript is active
-3. Only switching to dynamic relative time display after hydration is complete
-4. Adding appropriate `suppressHydrationWarning` to prevent browser extension conflicts
+1. Using the same formatting function for both server-side and client-side rendering
+2. Using consistent ISO string dates as input rather than Date objects
+3. Formatting dates in a predictable, locale-independent way
 
 This approach ensures consistent rendering between server and client, avoiding React hydration errors while still enabling dynamic updates after hydration is complete.
 
@@ -177,8 +172,6 @@ Start using the config file:
 ```bash
 pm2 start ecosystem.config.js
 ```
-
-The application will be accessible at [briangates.me:4000](http://briangates.me:4000).
 
 ## Next.js Project
 

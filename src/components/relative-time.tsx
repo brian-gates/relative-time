@@ -4,38 +4,64 @@ import { formatRelativeTime, getNextUpdateTime } from "@/utils/time";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 // Component implementation that handles the actual rendering and updates
-function RelativeTimeComponent({ date }: { date: Date | string | number }) {
-  const dateObj = useMemo(
-    () => (date instanceof Date ? date : new Date(date)),
-    [date]
-  );
-  const initialValue = formatRelativeTime(dateObj);
-  const [formattedDate, setFormattedDate] = useState(initialValue);
+function RelativeTimeComponent({ date }: { date: string }) {
+  const dateObj = useMemo(() => new Date(date), [date]);
+
+  // Format immediately using the same function that will be used on both server and client
+  // This ensures SSR and client render show identical content
+  const initialFormattedValue = formatRelativeTime(dateObj);
+
+  const [formattedDate, setFormattedDate] = useState(initialFormattedValue);
+  const [isMounted, setIsMounted] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Track if component is mounted (client-side only)
-  const [isMounted, setIsMounted] = useState(false);
+  // Store the last update timestamp to prevent redundant updates
+  const lastUpdateRef = useRef<number>(Date.now());
 
-  // Only run after initial hydration to prevent mismatches
+  // Set mounted flag without changing the formatted date
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  // Track date changes and update display when necessary
   useEffect(() => {
     if (!isMounted) return;
 
+    // Reset the formatted date when date prop changes
+    const newFormattedValue = formatRelativeTime(dateObj);
+    if (newFormattedValue !== formattedDate) {
+      setFormattedDate(newFormattedValue);
+    }
+
     function updateDisplay() {
+      // Check if sufficient time has passed since last update (at least 900ms)
+      // This prevents multiple updates within the same second
+      const now = Date.now();
+      if (now - lastUpdateRef.current < 900) {
+        // Schedule another check shortly
+        timeoutRef.current = setTimeout(updateDisplay, 1000);
+        return;
+      }
+
       const newFormattedValue = formatRelativeTime(dateObj);
 
+      // Only update state if the formatted text would actually change
       if (newFormattedValue !== formattedDate) {
         setFormattedDate(newFormattedValue);
+        lastUpdateRef.current = now;
       }
 
       const msUntilNextUpdate = getNextUpdateTime(dateObj);
-      timeoutRef.current = setTimeout(updateDisplay, msUntilNextUpdate);
+      // Add a small buffer to avoid edge cases
+      timeoutRef.current = setTimeout(updateDisplay, msUntilNextUpdate + 100);
     }
 
-    updateDisplay();
+    // Schedule the next update
+    const msUntilNextUpdate = getNextUpdateTime(dateObj);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(updateDisplay, msUntilNextUpdate);
 
     return () => {
       if (timeoutRef.current) {
@@ -44,26 +70,33 @@ function RelativeTimeComponent({ date }: { date: Date | string | number }) {
     };
   }, [dateObj, formattedDate, isMounted]);
 
-  // During SSR and first render, use static ISO string
-  // After hydration completes, use the client-side calculated value
   return (
     <time dateTime={dateObj.toISOString()} title={dateObj.toLocaleString()}>
-      {isMounted ? formattedDate : dateObj.toISOString()}
+      {formattedDate}
     </time>
   );
 }
 
-// Custom comparison function that only causes re-renders when the formatted text would change
+// Improved comparison function that strictly checks date equality
 const arePropsEqual = (
-  prevProps: { date: Date | string | number },
-  nextProps: { date: Date | string | number }
+  prevProps: { date: string },
+  nextProps: { date: string }
 ) => {
-  const prevDate =
-    prevProps.date instanceof Date ? prevProps.date : new Date(prevProps.date);
-  const nextDate =
-    nextProps.date instanceof Date ? nextProps.date : new Date(nextProps.date);
+  // If the ISO strings are identical, they're definitely equal
+  if (prevProps.date === nextProps.date) {
+    return true;
+  }
 
-  // Only re-render if the formatted display text would be different
+  // Parse the dates
+  const prevDate = new Date(prevProps.date);
+  const nextDate = new Date(nextProps.date);
+
+  // Compare actual time values rather than references
+  if (prevDate.getTime() === nextDate.getTime()) {
+    return true;
+  }
+
+  // Finally, compare the formatted output - only re-render if it would change
   const prevText = formatRelativeTime(prevDate);
   const nextText = formatRelativeTime(nextDate);
 
