@@ -7,6 +7,53 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <h1 className="text-2xl font-bold">Relative Time Component</h1>
 
+        <div className="flex flex-wrap gap-4 text-sm">
+          <a
+            href="http://briangates.me:4000"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            <svg
+              className="w-4 h-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+            briangates.me:4000
+          </a>
+          <a
+            href="https://github.com/brian-gates/relative-time"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
+            <svg
+              className="w-4 h-4"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+              />
+            </svg>
+            github.com/brian-gates/relative-time
+          </a>
+        </div>
+
         <div className="space-y-10">
           <div className="space-y-4">
             <h2 className="text-xl font-semibold">Interactive Demo</h2>
@@ -49,7 +96,7 @@ export default function Home() {
           </div>
 
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold">Optimizations</h2>
+            <h2 className="text-xl font-semibold">Features</h2>
             <div className="prose dark:prose-invert max-w-none">
               <p>
                 The RelativeTime component implements several optimizations for
@@ -57,28 +104,25 @@ export default function Home() {
               </p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <strong>Smart update intervals</strong> - Updates only when
+                  <strong>Smart Update Intervals</strong> - Updates only when
                   the displayed text would change, not on fixed intervals (e.g.,
                   seconds to minutes, minutes to hours)
                 </li>
                 <li>
-                  <strong>Initial server rendering</strong> - First render
-                  happens on the server for SEO and performance, then hydrates
-                  on the client
+                  <strong>Server-Side Rendering</strong> - Works with Next.js
+                  App Router and server components for SEO and performance
                 </li>
                 <li>
-                  <strong>Precise timeout management</strong> - Uses React
-                  useRef to track timeouts and properly clean them up to prevent
-                  memory leaks
+                  <strong>Client Hydration</strong> - Hydrates on the client to
+                  enable dynamic updates
                 </li>
                 <li>
-                  <strong>Minimal state updates</strong> - Updates state only
-                  when necessary to avoid unnecessary re-renders
+                  <strong>Memory Leak Prevention</strong> - Properly cleans up
+                  timeouts when unmounting
                 </li>
                 <li>
-                  <strong>Hydration compatibility</strong> - Uses
-                  suppressHydrationWarning to handle the time difference between
-                  server and client rendering
+                  <strong>Time Format Options</strong> - Displays appropriate
+                  formats for seconds, minutes, hours, days, months, and years
                 </li>
               </ul>
 

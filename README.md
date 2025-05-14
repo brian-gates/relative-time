@@ -1,5 +1,7 @@
 # RelativeTime Component
 
+View live demo at [briangates.me:4000](http://briangates.me:4000).
+
 A React component for displaying relative time (like "2 minutes ago") with optimal updating. Built with Next.js and TypeScript.
 
 ## Features
@@ -61,6 +63,92 @@ The demo page includes:
 3. Explanation of optimizations used
 
 Check the browser console to see logs of when the component actually updates.
+
+## Deployment with PM2
+
+To run this application in a production server environment using PM2:
+
+### Installation
+
+```bash
+# Install PM2 globally
+npm install -g pm2
+
+# Build the Next.js application for production
+npm run build
+```
+
+### Running with PM2
+
+```bash
+# Start the application with PM2
+pm2 start npm --name "relative-time" -- start
+
+# Alternative: directly use the Next.js start command
+# pm2 start "npx next start -p 4000" --name "relative-time"
+```
+
+### Managing the Application
+
+```bash
+# Check status
+pm2 status
+
+# View logs
+pm2 logs relative-time
+
+# Restart application
+pm2 restart relative-time
+
+# Stop application
+pm2 stop relative-time
+
+# Delete application from PM2
+pm2 delete relative-time
+```
+
+### Auto-restart on Server Reboot
+
+```bash
+# Generate startup script
+pm2 startup
+
+# Save the current PM2 process list
+pm2 save
+```
+
+### PM2 Configuration File (Ecosystem)
+
+Create a file named `ecosystem.config.js` in the project root:
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: "relative-time",
+      script: "npm",
+      args: "start",
+      instances: "max",
+      exec_mode: "cluster",
+      autorestart: true,
+      watch: false,
+      max_memory_restart: "1G",
+      env: {
+        NODE_ENV: "production",
+        PORT: 4000,
+      },
+    },
+  ],
+};
+```
+
+Start using the config file:
+
+```bash
+pm2 start ecosystem.config.js
+```
+
+The application will be accessible at [briangates.me:4000](http://briangates.me:4000).
 
 ## Next.js Project
 
