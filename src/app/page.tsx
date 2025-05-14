@@ -87,10 +87,10 @@ export default function Home() {
               </p>
               <p>
                 This component intelligently renders relative time strings (like
-                "2 minutes ago") and keeps them up-to-date with minimal
-                re-renders. Rather than using a fixed interval like setInterval,
-                it precisely calculates <em>when</em> the text would actually
-                change. For example:
+                &ldquo;2 minutes ago&rdquo;) and keeps them up-to-date with
+                minimal re-renders. Rather than using a fixed interval like
+                setInterval, it precisely calculates <em>when</em> the text
+                would actually change. For example:
               </p>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
@@ -107,11 +107,12 @@ export default function Home() {
                 </li>
               </ul>
               <p>
-                Open your browser's console to see log messages whenever the
-                component re-renders. You'll notice it only updates when the
-                displayed text actually changes, not at arbitrary intervals.
-                This approach significantly reduces unnecessary renders and DOM
-                updates while keeping the displayed time accurate.
+                Open your browser&apos;s console to see log messages whenever
+                the component re-renders. You&apos;ll notice it only updates
+                when the displayed text actually changes, not at arbitrary
+                intervals. This approach significantly reduces unnecessary
+                renders and DOM updates while keeping the displayed time
+                accurate.
               </p>
             </div>
           </div>
