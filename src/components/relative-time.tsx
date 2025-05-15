@@ -77,35 +77,5 @@ function RelativeTimeComponent({ date }: { date: string }) {
   );
 }
 
-// Improved comparison function that strictly checks date equality
-const arePropsEqual = (
-  prevProps: { date: string },
-  nextProps: { date: string }
-) => {
-  // If the ISO strings are identical, they're definitely equal
-  if (prevProps.date === nextProps.date) {
-    return true;
-  }
-
-  // Parse the dates
-  const prevDate = new Date(prevProps.date);
-  const nextDate = new Date(nextProps.date);
-
-  // Compare actual time values rather than references
-  if (prevDate.getTime() === nextDate.getTime()) {
-    return true;
-  }
-
-  // Finally, compare the formatted output - only re-render if it would change
-  const prevText = formatRelativeTime(prevDate);
-  const nextText = formatRelativeTime(nextDate);
-
-  return prevText === nextText;
-};
-
-// Export a memoized version of the component that only re-renders when
-// the formatted text would actually change, not just when the date prop changes
-// Note: In development mode with StrictMode enabled (default in Next.js),
-// you'll see components render twice. This is intentional behavior to help
-// detect issues and won't happen in production.
-export const RelativeTime = React.memo(RelativeTimeComponent, arePropsEqual);
+// Use React.memo's default shallow comparison (sufficient for primitive props like strings)
+export const RelativeTime = React.memo(RelativeTimeComponent);

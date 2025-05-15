@@ -11,7 +11,7 @@ A React component for displaying relative time (like "2 minutes ago") with optim
 - **Client Hydration** - Hydrates on the client to enable dynamic updates
 - **Memory Leak Prevention** - Properly cleans up timeouts when unmounting
 - **Time Format Options** - Displays appropriate formats for seconds, minutes, hours, days, months, and years
-- **Memoized Component** - Uses React.memo with a custom comparison function that prevents re-renders when dates would display the same text
+- **Memoized Component** - Uses React.memo to prevent unnecessary re-renders when the date string hasn't changed
 
 ## Installation
 
@@ -51,7 +51,7 @@ This approach minimizes re-renders while keeping the displayed time accurate.
 - Uses React's `useState` and `useEffect` hooks for state management
 - Uses `useRef` to track timeout references for proper cleanup
 - Implements hydration-safe rendering that prevents server/client mismatches
-- Uses `React.memo` with a custom comparison function for optimal re-rendering
+- Uses `React.memo` with default shallow comparison for optimal re-rendering
 
 ## Preventing Hydration Mismatches
 
