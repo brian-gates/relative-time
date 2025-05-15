@@ -2,8 +2,6 @@
 
 A React component for displaying relative time (like "2 minutes ago") with optimal updating. Built with Next.js and TypeScript.
 
-**GitHub Repository:** [github.com/brian-gates/relative-time](https://github.com/brian-gates/relative-time)
-
 ## Features
 
 - **Smart Update Intervals** - Updates only when the displayed text would change, not at fixed intervals
