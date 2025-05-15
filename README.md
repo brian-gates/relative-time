@@ -20,7 +20,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the demo.
 
-You can also visit the live demo at [briangates.me:4000](http://briangates.me:4000).
+You can also visit the live demo at [briangates.me/relative-time](https://briangates.me/relative-time).
 
 ## Usage
 

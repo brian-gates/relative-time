@@ -27,7 +27,7 @@ export default function Home() {
 
         <div className="flex flex-wrap gap-4 text-sm">
           <a
-            href="http://briangates.me:4000"
+            href="https://briangates.me/relative-time"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
@@ -46,7 +46,7 @@ export default function Home() {
                 d="M13 10V3L4 14h7v7l9-11h-7z"
               />
             </svg>
-            briangates.me:4000
+            briangates.me/relative-time
           </a>
           <a
             href="https://github.com/brian-gates/relative-time"
